@@ -48,7 +48,9 @@ class ShortenUrlTest extends TestCase
     /** @test */
     public function cant_post_a_too_long_url()
     {
-        $this->post(route('urls.store'), ['url' => 'not-a-valid-url'])
-            ->assertSessionHasErrors(['url']);
+        $this->post(
+            route('urls.store'),
+            ['url' => 'http://' . str_repeat('a', 2048)]
+        )->assertSessionHasErrors(['url']);
     }
 }
