@@ -14,7 +14,7 @@ class AddExpiryToUrls extends Migration
     public function up()
     {
         Schema::table('urls', function (Blueprint $table) {
-            $table->timestamp('expires_at')->nullable();
+            $table->timestamp('expires_at')->nullable()->after('short_url');
         });
     }
 

@@ -24,8 +24,7 @@ class ShortenUrlTest extends TestCase
         $response->assertSuccessful();
         $url = \App\Url::latest()->first();
 
-        $this->assertSame($longUrl, $url->long_url);
-        $this->assertEquals(6, strlen($url->short_url));
+        $this->assertSame($longUrl, $url->url);
     }
 
     public function url_not_expired() {

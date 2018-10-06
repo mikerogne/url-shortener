@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUrlsTable extends Migration
+class UpdateUrlsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateUrlsTable extends Migration
      */
     public function up()
     {
-        Schema::create('urls', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('long_url', 2048);
-            $table->string('short_url', 6);
-            $table->timestamps();
+        Schema::table('urls', function (Blueprint $table) {
+            $table->dropColumn('short_url');
+            $table->renameColumn('long_url', 'url');
         });
     }
 
@@ -28,6 +26,9 @@ class CreateUrlsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('urls');
+        Schema::table('urls', function (Blueprint $table) {
+            $table->string('short_url', 6);
+            $table->renameColumn('url', 'long_url');
+        });
     }
 }

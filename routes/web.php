@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::resource('url', 'UrlController')->only(['store', 'delete']);
+Route::get('/u/{slug}', 'UrlController@link');

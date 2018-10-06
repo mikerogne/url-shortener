@@ -3,24 +3,31 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\ExpiredScope;
 
 class Url extends Model
 {
 
     protected $guarded = ['id'];
 
-
     /**
-     * Scope a query to only include active users.
+     * The "booting" method of the model.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return void
      */
-    public function scopeActive($query) {
-        return $query->where('expires_at', '>', Carbon::now())
-                     ->orWhere('expires_at', null);
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new ExpiredScope);
     }
 
+    public function getSlugAttribute() {
+        return $this->id ? base_convert($this->id, 10, 36) : null;
+    }
+
+    public static function slugToId($slug) : int {
+        return base_convert($slug, 36, 10);
+    }
 
 
 }
