@@ -18,7 +18,7 @@ class ShortenUrlTest extends TestCase
         $longUrl = "https://github.com/mikerogne/url-shortener/issues";
 
         // ACT
-        $response = $this->post(route('url.store', ['url' => $longUrl]));
+        $response = $this->post(route('urls.store', ['url' => $longUrl]));
 
         // ASSERT
         $response->assertSuccessful();
