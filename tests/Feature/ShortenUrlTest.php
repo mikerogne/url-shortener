@@ -9,16 +9,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShortenUrlTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, WithFaker;
 
     /** @test */
     public function can_shorten_a_url()
     {
         // ARRANGE
-        $longUrl = "https://github.com/mikerogne/url-shortener/issues";
+        $longUrl = $this->faker->url;;
 
         // ACT
-        $response = $this->post(route('url.store', ['url' => $longUrl]));
+        $response = $this->post(route('urls.store', ['url' => $longUrl]));
 
         // ASSERT
         $response->assertSuccessful();
@@ -50,5 +50,29 @@ class ShortenUrlTest extends TestCase
         $test_url = \App\Url::find($new_url);
 
         $this->assertEmpty($test_url);
+    }
+
+    /** @test */
+    public function has_to_supply_url()
+    {
+        $response = $this->post(route('urls.store'), ['url' => '']);
+
+        $response->assertSessionHasErrors(['url']);
+    }
+
+    /** @test */
+    public function has_to_supply_valid_url()
+    {
+        $response = $this->post(route('urls.store'), ['url' => 'not-a-valid-url']);
+
+        $response->assertSessionHasErrors(['url']);
+    }
+
+    /** @test */
+    public function cant_post_a_too_long_url()
+    {
+        $response = $this->post(route('urls.store'), ['url' => 'http://' . str_repeat('a', 2048)]);
+
+        $response->assertSessionHasErrors(['url']);
     }
 }

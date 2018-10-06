@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreShortUrl;
 use App\Url;
 use Illuminate\Http\Request;
 
@@ -10,11 +11,11 @@ class UrlController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param StoreShortUrl $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreShortUrl $request)
     {
         $url = Url::create([
             'url' => $request->input('url'),
