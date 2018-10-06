@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('url', 'UrlController')->only(['store', 'delete']);
+Route::resource('urls', 'UrlController')->only(['store', 'delete']);
