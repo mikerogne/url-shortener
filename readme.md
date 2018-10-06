@@ -16,4 +16,6 @@ Fun little project. PR's welcome (hello, Hacktoberfest), but must include tests!
 
 Thinking of contributing? Awesome! Please only submit serious pull requests, not fluff for Hacktoberfest.
 
+You can follow the above installation instructions, but make sure you clone your *fork* and not this repository.
+
 And most importantly, **tests must be included!**
