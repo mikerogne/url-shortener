@@ -1,0 +1,15 @@
+.btn {
+  @apply .rounded .inline-flex .items-center .justify-center .select-none .p-3;
+
+  &:disabled {
+    @apply .opacity-50 .cursor-not-allowed;
+  }
+}
+
+.btn-primary {
+    @apply .bg-green .text-white;
+
+    &:hover {
+      @apply .bg-green-darker;
+    }
+}
