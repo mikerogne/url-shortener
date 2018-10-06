@@ -27,6 +27,7 @@ class ShortenUrlTest extends TestCase
         $this->assertSame($longUrl, $url->url);
     }
 
+    /** @test */
     public function url_not_expired() {
         $new_url = \App\Url::create([
             'long_url' => "https://github.com/mikerogne/url-shortener/issues",
@@ -40,6 +41,7 @@ class ShortenUrlTest extends TestCase
         $this->assertEquals($new_url->id, $test_url->id);
     }
 
+    /** @test */
     public function url_expired() {
         $new_url = \App\Url::create([
             'long_url' => "https://github.com/mikerogne/url-shortener/issues",
