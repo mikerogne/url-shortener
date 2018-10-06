@@ -15,7 +15,18 @@
                 {{ config('app.name') }}
             </h1>
 
-            <form action="{{ route('url.store') }}" method="post">
+            @if ($errors->any())
+                <div class="bg-red-dark text-white p-3 mb-3 rounded">
+                    <ul class="list-reset">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('urls.store') }}" method="post">
+                {{ csrf_field() }}
                 <input
                     type="text"
                     name="url"
