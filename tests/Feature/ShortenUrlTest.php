@@ -45,6 +45,16 @@ class ShortenUrlTest extends TestCase
     }
 
     /** @test */
+    public function has_to_supply_unique_url()
+    {
+        $response1 = $this->post(route('urls.store'), ['url' => 'http://example.com']);
+        $response2 = $this->post(route('urls.store'), ['url' => 'http://example.com']);
+
+        $response1->assertSuccessful();
+        $response2->assertSessionHasErrors(['url']);
+    }
+
+    /** @test */
     public function cant_post_a_too_long_url()
     {
         $response = $this->post(route('urls.store'), ['url' => 'http://' . str_repeat('a', 2048)]);
