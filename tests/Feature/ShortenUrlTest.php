@@ -31,26 +31,24 @@ class ShortenUrlTest extends TestCase
     /** @test */
     public function has_to_supply_url()
     {
-        $this->post(route('urls.store'))
-            ->assertSessionHasErrors(['url']);
+        $response = $this->post(route('urls.store'), ['url' => '']);
 
-        $this->post(route('urls.store'), ['url' => ''])
-            ->assertSessionHasErrors(['url']);
+        $response->assertSessionHasErrors(['url']);
     }
 
     /** @test */
     public function has_to_supply_valid_url()
     {
-        $this->post(route('urls.store'), ['url' => 'not-a-valid-url'])
-            ->assertSessionHasErrors(['url']);
+        $response = $this->post(route('urls.store'), ['url' => 'not-a-valid-url']);
+
+        $response->assertSessionHasErrors(['url']);
     }
 
     /** @test */
     public function cant_post_a_too_long_url()
     {
-        $this->post(
-            route('urls.store'),
-            ['url' => 'http://' . str_repeat('a', 2048)]
-        )->assertSessionHasErrors(['url']);
+        $response = $this->post(route('urls.store'), ['url' => 'http://' . str_repeat('a', 2048)]);
+
+        $response->assertSessionHasErrors(['url']);
     }
 }
