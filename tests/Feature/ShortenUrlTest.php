@@ -30,12 +30,11 @@ class ShortenUrlTest extends TestCase
     /** @test */
     public function url_not_expired() {
         $new_url = \App\Url::create([
-            'long_url' => "https://github.com/mikerogne/url-shortener/issues",
-            'short_url' => '12345',
-            'expired_at' => \Carbon\Carbon::now()->addDay()
+            'url' => "https://github.com/mikerogne/url-shortener/issues",
+            'expires_at' => \Carbon\Carbon::now()->addDay()
         ]);
 
-        $test_url = \App\Url::find($new_url);
+        $test_url = \App\Url::find($new_url->id);
 
         $this->assertNotEmpty($test_url);
         $this->assertEquals($new_url->id, $test_url->id);
@@ -44,9 +43,8 @@ class ShortenUrlTest extends TestCase
     /** @test */
     public function url_expired() {
         $new_url = \App\Url::create([
-            'long_url' => "https://github.com/mikerogne/url-shortener/issues",
-            'short_url' => '12345',
-            'expired_at' => \Carbon\Carbon::now()->subDay()
+            'url' => "https://github.com/mikerogne/url-shortener/issues",
+            'expires_at' => \Carbon\Carbon::now()->subDay()
         ]);
 
         $test_url = \App\Url::find($new_url);
