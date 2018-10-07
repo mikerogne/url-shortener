@@ -45,6 +45,23 @@ return [
             'prefix' => '',
         ],
 
+        'testing' => [
+            'driver' => env('TEST_DB_DRIVER', 'sqlite'),
+            'database' => env('TEST_DB_DATABASE', ':memory:'),
+            'host' => env('TEST_DB_HOST', '127.0.0.1'),
+            'port' => env('TEST_DB_PORT', '3306'),
+            'username' => env('TEST_DB_USERNAME', 'forge'),
+            'password' => env('TEST_DB_PASSWORD', ''),
+            'prefix' => env('TEST_DB_PREFIX', ''),
+            'unix_socket' => env('TEST_DB_SOCKET', ''),
+            'charset' => env('TEST_DB_CHARSET', 'utf8mb4'),
+            'collation' => 'utf8mb4_unicode_ci',
+            'strict' => true,
+            'engine' => null,
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
