@@ -25,7 +25,7 @@ class UrlController extends Controller
     }
 
     public function link($slug) {
-        $url = Url::find(Url::slugToId($slug));
+        $url = Url::find(Url::convertSlugToInt($slug));
         return $url ? redirect($url->url) : abort(404);
     }
 
