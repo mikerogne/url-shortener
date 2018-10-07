@@ -25,7 +25,7 @@ class Url extends Model
         return $this->id ? base_convert($this->id, 10, 36) : null;
     }
 
-    public static function convertSlugToInt($slug) : int {
+    public static function convert_slug_to_id($slug) : int {
         return base_convert($slug, 36, 10);
     }
 
