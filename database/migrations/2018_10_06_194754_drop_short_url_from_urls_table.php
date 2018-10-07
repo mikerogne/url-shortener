@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateUrlsTable extends Migration
+class DropShortUrlFromUrlsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,6 @@ class UpdateUrlsTable extends Migration
     {
         Schema::table('urls', function (Blueprint $table) {
             $table->dropColumn('short_url');
-            $table->renameColumn('long_url', 'url');
         });
     }
 
@@ -27,8 +26,7 @@ class UpdateUrlsTable extends Migration
     public function down()
     {
         Schema::table('urls', function (Blueprint $table) {
-            $table->string('short_url', 6);
-            $table->renameColumn('url', 'long_url');
+            $table->string('short_url', 6)->after('long_url');
         });
     }
 }

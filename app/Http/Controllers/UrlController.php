@@ -11,32 +11,31 @@ class UrlController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreShortUrl $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreShortUrl $request)
     {
-        $url = Url::create([
-            'url' => $request->input('url'),
-        ]);
-
-        return $url;
+        return Url::createFromUrl($request->input('url'));
     }
 
-    public function link($slug) {
-        $url = Url::find(Url::convert_slug_to_id($slug));
-        return $url ? redirect($url->url) : abort(404);
+    /**
+     * Redirect to the link.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function link(string $slug)
+    {
+        $url = Url::findBySlugOrFail($slug);
+
+        return redirect($url->url);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         //
     }

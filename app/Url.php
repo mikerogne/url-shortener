@@ -7,39 +7,49 @@ use App\Scopes\ExpiredScope;
 
 class Url extends Model
 {
-
     protected $guarded = ['id'];
 
     /**
      * The "booting" method of the model.
-     *
-     * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
         static::addGlobalScope(new ExpiredScope);
     }
 
     /**
-     * Converts the models ID to a base 36 string to shorten it
-     *
-     * @return string
+     * Create a Url by a url string.
      */
-    public function getSlugAttribute() : string {
-        return $this->id ? base_convert($this->id, 10, 36) : null;
+    public static function createFromUrl(string $url): Url
+    {
+        return static::create(['url' => $url]);
     }
 
     /**
-     * Static function to convert any string to a base 10 version of itself
-     * Used to convert the URL slug (domain.com/u/{slug}) to an integer
-     * which we can then pass into Url::find() to look up the full url
-     *
-     * @return int
+     * Find a Url by it's slug, or fail.
      */
-    public static function convert_slug_to_id($slug) : int {
+    public static function findBySlugOrFail(string $slug): Url
+    {
+        return static::findOrFail(static::slugToId($slug));
+    }
+
+    /**
+     * Static function to convert any string to a base 10 version of itself.
+     *
+     * Used to convert the URL slug (domain.com/u/{slug}) to an integer
+     * which we can then pass into Url::find() to look up the full url.
+     */
+    public static function slugToId($slug): int
+    {
         return base_convert($slug, 36, 10);
     }
 
-
+    /**
+     * Converts the models ID to a base 36 string to shorten it
+     */
+    public function getSlugAttribute(): ?string
+    {
+        return $this->id ? base_convert($this->id, 10, 36) : null;
+    }
 }
