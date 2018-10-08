@@ -2,17 +2,18 @@
 
 namespace Tests\Feature;
 
+use App\Url;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ShortenUrlTest extends TestCase
 {
-    use DatabaseMigrations, WithFaker;
+    use RefreshDatabase, WithFaker;
 
     /** @test */
-    public function can_shorten_a_url()
+    function can_shorten_a_url()
     {
         // ARRANGE
         $longUrl = $this->faker->url;;
@@ -22,14 +23,13 @@ class ShortenUrlTest extends TestCase
 
         // ASSERT
         $response->assertSuccessful();
-        $url = \App\Url::latest()->first();
+        $url = Url::latest()->first();
 
-        $this->assertSame($longUrl, $url->long_url);
-        $this->assertEquals(6, strlen($url->short_url));
+        $this->assertSame($longUrl, $url->url);
     }
 
     /** @test */
-    public function has_to_supply_url()
+    function has_to_supply_url()
     {
         $response = $this->post(route('urls.store'), ['url' => '']);
 
@@ -37,7 +37,7 @@ class ShortenUrlTest extends TestCase
     }
 
     /** @test */
-    public function has_to_supply_valid_url()
+    function has_to_supply_valid_url()
     {
         $response = $this->post(route('urls.store'), ['url' => 'not-a-valid-url']);
 
@@ -45,10 +45,28 @@ class ShortenUrlTest extends TestCase
     }
 
     /** @test */
-    public function cant_post_a_too_long_url()
+    function cant_post_a_too_long_url()
     {
         $response = $this->post(route('urls.store'), ['url' => 'http://' . str_repeat('a', 2048)]);
 
         $response->assertSessionHasErrors(['url']);
+    }
+
+    /** @test */
+    function redirects_url()
+    {
+        $url = Url::createFromUrl('https://example.com');
+
+        $response = $this->get(route('urls.link', $url->slug));
+
+        $response->assertRedirect($url->url);
+    }
+
+    /** @test */
+    function shows_404_when_invalid_slug()
+    {
+        $response = $this->get(route('urls.link', 'foo'));
+
+        $response->assertNotFound();
     }
 }
