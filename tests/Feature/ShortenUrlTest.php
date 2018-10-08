@@ -24,8 +24,32 @@ class ShortenUrlTest extends TestCase
         $response->assertSuccessful();
         $url = \App\Url::latest()->first();
 
-        $this->assertSame($longUrl, $url->long_url);
-        $this->assertEquals(6, strlen($url->short_url));
+        $this->assertSame($longUrl, $url->url);
+    }
+
+    /** @test */
+    public function url_not_expired() {
+        $new_url = \App\Url::create([
+            'url' => "https://github.com/mikerogne/url-shortener/issues",
+            'expires_at' => \Carbon\Carbon::now()->addDay()
+        ]);
+
+        $test_url = \App\Url::find($new_url->id);
+
+        $this->assertNotEmpty($test_url);
+        $this->assertEquals($new_url->id, $test_url->id);
+    }
+
+    /** @test */
+    public function url_expired() {
+        $new_url = \App\Url::create([
+            'url' => "https://github.com/mikerogne/url-shortener/issues",
+            'expires_at' => \Carbon\Carbon::now()->subDay()
+        ]);
+
+        $test_url = \App\Url::find($new_url);
+
+        $this->assertEmpty($test_url);
     }
 
     /** @test */

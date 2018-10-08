@@ -18,11 +18,15 @@ class UrlController extends Controller
     public function store(StoreShortUrl $request)
     {
         $url = Url::create([
-            'long_url' => $request->input('url'),
-            'short_url' => str_random(6),
+            'url' => $request->input('url'),
         ]);
 
         return $url;
+    }
+
+    public function link($slug) {
+        $url = Url::find(Url::convert_slug_to_id($slug));
+        return $url ? redirect($url->url) : abort(404);
     }
 
     /**
