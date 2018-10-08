@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class UrlController extends Controller
 {
+    public function redirect(Url $shortUrl)
+    {
+        return redirect()->to($shortUrl->long_url);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

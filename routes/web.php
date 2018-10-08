@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::resource('urls', 'UrlController')->only(['store', 'delete']);
+
+Route::get('{shortUrl}', 'UrlController@redirect')->where(['shortUrl' => '[a-zA-Z0-9]{6}']);
