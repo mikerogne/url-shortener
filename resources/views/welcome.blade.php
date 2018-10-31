@@ -1,45 +1,41 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+@extends('layout')
 
-        <title>{{ config('app.name') }}</title>
-    </head>
-    <body class="bg-grey-lighter border-t-8 border-blue-light font-sans">
-        <div id="app" class="container mx-auto">
-            <h1 class="text-5xl my-8 font-bold">
-                {{ config('app.name') }}
-            </h1>
+@section('content')
+  <div class="col-xl-9 mx-auto">
+    <h1 class="mb-5">Build a landing page for your business or project and generate more leads!</h1>
+  </div>
+  <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+    <form action="{{ route('urls.store') }}" method="post">
+        {{ csrf_field() }}
+      <div class="form-row">
+        <div class="col-12 col-md-9 mb-2 mb-md-0">
+          @if ($errors->any())
+              <div class="bg-red-dark text-white p-3 mb-3 rounded">
+                  <ul class="list-reset">
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+          @endif
 
-            @if ($errors->any())
-                <div class="bg-red-dark text-white p-3 mb-3 rounded">
-                    <ul class="list-reset">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
-            <form action="{{ route('urls.store') }}" method="post">
-                {{ csrf_field() }}
-                <input
-                    type="text"
-                    name="url"
-                    class="input"
-                    placeholder="http://your-url-here.com"
-                >
-
-                <button type="submit" class="btn btn-primary my-3">
-                    Shorten URL
-                </button>
-            </form>
+              <input
+                  type="text"
+                  name="url"
+                  
+                  placeholder="http://your-url-here.com"
+                  class="form-control form-control-lg"
+              >
         </div>
+        <div class="col-12 col-md-3">
+          <button type="submit" class="btn btn-block btn-lg btn-primary">Shorten URL</button>
+        </div>
+      </div>
+    </form>
+  </div>
 
-        <script src="{{ mix('js/app.js') }}"></script>
-    </body>
-</html>
+
+
+            </form>
+  @endsection

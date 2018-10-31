@@ -25,9 +25,11 @@ class UrlController extends Controller
         $url = Url::create([
             'long_url' => $request->input('url'),
             'short_url' => str_random(6),
-        ]);
 
-        return $url;
+        ]);
+        //take the short_url from the db and append it to the app's base url
+        $ShortFullUrl = url('/') . '/' . $url->short_url;
+        return view('status')->with('shorturl', $ShortFullUrl);
     }
 
     /**
